@@ -16,7 +16,7 @@ TUCANO_HEIGHT = 38
 TUCANO = pygame.image.load('tucano.png').convert_alpha()
 TUCANO_PEQUENO = pygame.transform.scale(TUCANO, (TUCANO_WIDTH, TUCANO_HEIGHT))
 FUNDO = pygame.image.load('wallpaper.jpg').convert()
-TRONCO = pygame.image.load('tronco.png').convert_alpha()
+TRONCO = pygame.image.load('tronco.jpg').convert_alpha()
 
 
 #Loop principal
