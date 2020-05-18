@@ -11,10 +11,12 @@ WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Flappy Tucano')
 
 #Inicia assets
+
 TUCANO_WIDTH = 50
 TUCANO_HEIGHT = 38
 TUCANO = pygame.image.load('tucano.png').convert_alpha()
 TUCANO_PEQUENO = pygame.transform.scale(TUCANO, (TUCANO_WIDTH, TUCANO_HEIGHT))
+
 
 #Iniciação do jogo
 GAME = True
