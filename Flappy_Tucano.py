@@ -11,10 +11,10 @@ WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Flappy Tucano')
 
 #Inicia assets
-TOUCAN_WIDTH = 50
-TOUCAN_HEIGHT = 38
-toucan_img = pygame.image.load('assets/img/meteorBrown_med1.png').convert_alpha()
-toucan_img_small = pygame.transform.scale(toucan_img, (TOUCAN_WIDTH, TOUCAN_HEIGHT))
+TUCANO_WIDTH = 50
+TUCANO_HEIGHT = 38
+TUCANO = pygame.image.load('tucano.png').convert_alpha()
+TUCANO_PEQUENO = pygame.transform.scale(TUCANO, (TUCANO_WIDTH, TUCANO_HEIGHT))
 
 #Iniciação do jogo
 GAME = True
@@ -23,10 +23,10 @@ FUNDO = pygame.image.load('Fundo.jpeg').convert()
 
 #Loop principal
 while GAME:
-    # ----- Trata eventos
+    #Trata eventos
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            game = False
+            GAME = False
 
     WINDOW.fill((0, 0, 0))  # Preenche com a cor branca
     WINDOW.blit(FUNDO, (10, 10))
