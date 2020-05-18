@@ -13,7 +13,7 @@ pygame.display.set_caption('Flappy Tucano')
 #Inicia assets
 TOUCAN_WIDTH = 50
 TOUCAN_HEIGHT = 38
-toucan_img = pygame.image.load('assets/img/meteorBrown_med1.png').convert_alpha()
+toucan_img = pygame.image.load('tucano.png').convert_alpha()
 toucan_img_small = pygame.transform.scale(toucan_img, (TOUCAN_WIDTH, TOUCAN_HEIGHT))
 
 #Iniciação do jogo
