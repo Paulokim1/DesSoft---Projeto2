@@ -22,6 +22,9 @@ FUNDO = pygame.transform.scale(FUNDO,(WIDTH,HEIGHT))
 
 TRONCO = pygame.image.load('tronco.jpg').convert_alpha()
 
+SPEED = 10 
+
+GRAVITY = 10 
 #inicia sprites
 class Tucano(pygame.sprite.Sprite):
 	def __init__(self):
@@ -31,14 +34,26 @@ class Tucano(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.centerx = WIDTH/2
 		self.rect.bottom = HEIGHT/2
-		self.speedy = 10
+		self.speed = SPEED
+
+	def pulo(self):
+		self.speed = - SPEED
 
 	def update(self):
-		self.rect.y += self.speedy
+		self.rect.y += self.speed
+		self.rect.y += GRAVITY 
 
-tucano_group = pygame.sprite.Group()
+# class Tronco(pygame.sprite.Sprite):
+# 	def __init__(self):
+# 		pygame.sprite.Sprite.__init__(self)
+
+# 	self.image = TRONCO 
+# 	self.rect = self.image.get_rect()
+
+
+sprite_group = pygame.sprite.Group()
 player_tucano = Tucano()
-tucano_group.add(player_tucano)
+sprite_group.add(player_tucano)
 
 clock = pygame.time.Clock()
 FPS = 30
@@ -53,15 +68,15 @@ while GAME:
 
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_SPACE:
-				Tucano.speedy -= 30
+				Tucano.pulo()
 
 
 
 	
 	WINDOW.blit(FUNDO, (0,0))
 	
-	tucano_group.update()
-	tucano_group.draw(FUNDO)
+	sprite_group.update()
+	sprite_group.draw(FUNDO)
 
 	pygame.display.update()
 
