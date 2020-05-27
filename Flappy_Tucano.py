@@ -5,33 +5,65 @@ import pygame
 pygame.init()
 
 #Especificações sobre a janela e o seu Título
-WIDTH = 1000
-HEIGHT = 800
+WIDTH = 800
+HEIGHT = 500
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Flappy Tucano')
 
 #Inicia assets
-TUCANO_WIDTH = 50
-TUCANO_HEIGHT = 38
-TUCANO = pygame.image.load('tucano.png').convert_alpha()
-TUCANO_PEQUENO = pygame.transform.scale(TUCANO, (TUCANO_WIDTH, TUCANO_HEIGHT))
+TUCANO_WIDTH = 100
+TUCANO_HEIGHT = 100
+
+TUCANO = pygame.image.load('tucano2.png').convert_alpha()
+TUCANO = pygame.transform.scale(TUCANO, (TUCANO_WIDTH, TUCANO_HEIGHT))
+
 FUNDO = pygame.image.load('wallpaper.jpg').convert()
+FUNDO = pygame.transform.scale(FUNDO,(WIDTH,HEIGHT))
+
 TRONCO = pygame.image.load('tronco.jpg').convert_alpha()
 
+#inicia sprites
+class Tucano(pygame.sprite.Sprite):
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
 
+		self.image = TUCANO
+		self.rect = self.image.get_rect()
+		self.rect.centerx = WIDTH/2
+		self.rect.bottom = HEIGHT/2
+		self.speedy = 10
+
+	def update(self):
+		self.rect.y += self.speedy
+
+tucano_group = pygame.sprite.Group()
+player_tucano = Tucano()
+tucano_group.add(player_tucano)
+
+clock = pygame.time.Clock()
+FPS = 30
 #Loop principal
 GAME = True
 
 while GAME:
-    #Trata eventos
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            GAME = False
+	clock.tick(FPS)
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+			GAME = False
 
-    WINDOW.fill((0, 0, 0))  # Preenche com a cor branca
-    WINDOW.blit(FUNDO, (10, 10))
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_SPACE:
+				Tucano.speedy -= 30
 
-    pygame.display.update()
+
+
+	
+	WINDOW.blit(FUNDO, (0,0))
+	
+	tucano_group.update()
+	tucano_group.draw(FUNDO)
+
+	pygame.display.update()
 
 #Finalização do código
 pygame.quit()
