@@ -37,14 +37,14 @@ class Tucano(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.centerx = WIDTH/2
 		self.rect.bottom = HEIGHT/2
-		self.speed = SPEED
+		self.speed = SPEED*2
 
 	def update(self):
 		self.speed += GRAVITY
 		self.rect.y += self.speed
 
 	def pulo(self):
-		self.speed = -SPEED
+		self.speed = -SPEED*1.5
 # class Tronco(pygame.sprite.Sprite):
 # 	def __init__(self):
 # 		pygame.sprite.Sprite.__init__(self)
