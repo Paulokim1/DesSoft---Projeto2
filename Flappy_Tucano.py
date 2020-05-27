@@ -25,9 +25,9 @@ FUNDO = pygame.transform.scale(FUNDO,(WIDTH,HEIGHT))
 # TRONCO = pygame.image.load('tronco.jpg').convert_alpha()
 # TRONCO = pygame.transform.scale(TRONCO,(TRONCO_WIDTH,TRONCO_HEIGHT))
 
-SPEED = 75
+SPEED = 10
 
-GRAVITY = 5 
+GRAVITY = 1 
 #inicia sprites
 class Tucano(pygame.sprite.Sprite):
 	def __init__(self):
@@ -39,12 +39,12 @@ class Tucano(pygame.sprite.Sprite):
 		self.rect.bottom = HEIGHT/2
 		self.speed = SPEED
 
-	def pulo(self):
-		self.rect.y -= SPEED
-
 	def update(self):
-		self.rect.y += GRAVITY 
+		self.speed += GRAVITY
+		self.rect.y += self.speed
 
+	def pulo(self):
+		self.speed = -SPEED
 # class Tronco(pygame.sprite.Sprite):
 # 	def __init__(self):
 # 		pygame.sprite.Sprite.__init__(self)
