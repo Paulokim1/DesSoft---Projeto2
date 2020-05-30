@@ -59,9 +59,28 @@ sprite_group.add(player_tucano)
 
 clock = pygame.time.Clock()
 FPS = 30
+
+#Tela inicial
+PRETO = (0,0,0)
+TELA_INICIAL = True
+while TELA_INICIAL:
+	FONTE_TITULO = pygame.font.SysFont(None, 48)
+	FONTE_INSTRUCOES = pygame.font.SysFont(None, 24)
+	TITULO = FONTE_TITULO.render("FLAPPY TUCANO", True, (255,255,255))
+	INSTRUCOES = FONTE_INSTRUCOES.render("Aperte espaço para controlar a altura do tucano", True,(255,255,255))
+	START = FONTE_INSTRUCOES.render("Aperte enter para começar o jogo", True, (255,255,255))
+	for event in pygame.event.get():
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_RETURN:
+				TELA_INICIAL = False
+	WINDOW.blit(FUNDO,(0,0))
+	WINDOW.blit(TITULO, (250, 100))
+	WINDOW.blit(INSTRUCOES, (200, 220))
+	WINDOW.blit(START, (250, 450))
+	pygame.display.update()
+
 #Loop principal
 GAME = True
-
 while GAME:
 	clock.tick(FPS)
 	for event in pygame.event.get():
