@@ -3,7 +3,7 @@ import pygame
 
 #Iniciação do código
 pygame.init()
-
+GAME = True
 #Especificações sobre a janela e o seu Título
 WIDTH = 800
 HEIGHT = 500
@@ -52,7 +52,6 @@ class Tucano(pygame.sprite.Sprite):
 # 	self.image = TRONCO 
 # 	self.rect = self.image.get_rect()
 
-
 sprite_group = pygame.sprite.Group()
 player_tucano = Tucano()
 sprite_group.add(player_tucano)
@@ -73,6 +72,11 @@ while TELA_INICIAL:
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_RETURN:
 				TELA_INICIAL = False
+		if event.type == pygame.QUIT:
+			TELA_INICIAL = False
+			GAME = False
+
+
 	WINDOW.blit(FUNDO,(0,0))
 	WINDOW.blit(TITULO, (250, 100))
 	WINDOW.blit(INSTRUCOES, (200, 220))
@@ -80,7 +84,6 @@ while TELA_INICIAL:
 	pygame.display.update()
 
 #Loop principal
-GAME = True
 while GAME:
 	clock.tick(FPS)
 	for event in pygame.event.get():
