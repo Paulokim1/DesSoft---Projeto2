@@ -30,9 +30,9 @@ TRONCO = pygame.transform.scale(TRONCO,(TRONCO_WIDTH,TRONCO_HEIGHT))
 
 TRONCO_INVERTIDO = pygame.transform.flip(TRONCO,True,True)
 
-SPEED = 75
+SPEED = 10
 
-GRAVITY = 5 
+GRAVITY = 1 
 #inicia sprites
 class Tucano(pygame.sprite.Sprite):
 	def __init__(self):
@@ -42,19 +42,28 @@ class Tucano(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.centerx = WIDTH/2
 		self.rect.bottom = HEIGHT/2
-		self.speed = SPEED
-
-	def pulo(self):
-		self.rect.y -= SPEED
+		self.speed = SPEED*2
 
 	def update(self):
-		self.rect.y += GRAVITY 
+		self.speed += GRAVITY
+		self.rect.y += self.speed
 
+<<<<<<< HEAD
 class Tronco(pygame.sprite.Sprite):
  	def __init__(self):
  		pygame.sprite.Sprite.__init__(self)
  		self.image = TRONCO
  		self.rect = self.image.get_rect()
+=======
+	def pulo(self):
+		self.speed = -SPEED*1.5
+# class Tronco(pygame.sprite.Sprite):
+# 	def __init__(self):
+# 		pygame.sprite.Sprite.__init__(self)
+
+# 	self.image = TRONCO 
+# 	self.rect = self.image.get_rect()
+>>>>>>> 26ecdc276dd59e311e611fc78c5b29fab5c0278b
 
 class Tronco_invertido(pygame.sprite.Sprite):
 	def __init__(self):
