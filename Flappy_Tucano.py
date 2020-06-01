@@ -1,5 +1,6 @@
 #Blibioteca do pygame importada
 import pygame
+import random
 
 #Iniciação do código
 pygame.init()
@@ -13,8 +14,7 @@ pygame.display.set_caption('Flappy Tucano')
 #Inicia assets
 TUCANO_WIDTH = 100
 TUCANO_HEIGHT = 100
-# TRONCO_WIDTH =
-# TRONCO_HEIGHT =
+
 
 TUCANO = pygame.image.load('tucano2.png').convert_alpha()
 TUCANO = pygame.transform.scale(TUCANO, (TUCANO_WIDTH, TUCANO_HEIGHT))
@@ -22,8 +22,11 @@ TUCANO = pygame.transform.scale(TUCANO, (TUCANO_WIDTH, TUCANO_HEIGHT))
 FUNDO = pygame.image.load('wallpaper.jpg').convert()
 FUNDO = pygame.transform.scale(FUNDO,(WIDTH,HEIGHT))
 
-# TRONCO = pygame.image.load('tronco.jpg').convert_alpha()
-# TRONCO = pygame.transform.scale(TRONCO,(TRONCO_WIDTH,TRONCO_HEIGHT))
+TRONCO = pygame.image.load('tronco.jpg').convert_alpha()
+
+BRANCO = (255,255,255)
+TRONCO.set_colorkey(BRANCO)
+TRONCO_GAP = 300
 
 SPEED = 10
 
@@ -45,16 +48,45 @@ class Tucano(pygame.sprite.Sprite):
 
 	def pulo(self):
 		self.speed = -SPEED*1.5
-# class Tronco(pygame.sprite.Sprite):
-# 	def __init__(self):
-# 		pygame.sprite.Sprite.__init__(self)
 
-# 	self.image = TRONCO 
-# 	self.rect = self.image.get_rect()
+class Tronco(pygame.sprite.Sprite):
+	def __init__(self,inverted,xpos,ysize):
+		pygame.sprite.Sprite.__init__(self)
+		
+		self.image = TRONCO 
+		self.rect = self.image.get_rect()
+		self.rect[0] = xpos
 
-sprite_group = pygame.sprite.Group()
+		if inverted:
+			self.image = pygame.transform.flip(self.image,False,True)
+			self.rect[1] = - (self.rect[3] - ysize)
+		else:
+			self.rect[1] = HEIGHT - ysize
+
+	def update(self):
+		self.rect[0] -= SPEED
+
+def random_size(xpos):
+	size = random.randint(100,300)
+	tronco = Tronco(False,xpos,size)
+	tronco_invertido = Tronco(True,xpos,HEIGHT - size - TRONCO_GAP)
+	return (tronco,tronco_invertido)
+
+def is_off_screen(sprite):
+	return sprite.rect[0] < -(sprite.rect[2])
+
+
+tucano_group = pygame.sprite.Group()
+tronco_group = pygame.sprite.Group()
 player_tucano = Tucano()
-sprite_group.add(player_tucano)
+tucano_group.add(player_tucano)
+
+
+for i in range(2):
+	troncos = random_size(WIDTH*i)
+	tronco_group.add(troncos[0])
+	tronco_group.add(troncos[1])
+
 
 clock = pygame.time.Clock()
 FPS = 30
@@ -96,9 +128,26 @@ while GAME:
 
 
 	WINDOW.blit(FUNDO, (0,0))
+
+	if is_off_screen(tronco_group.sprites()[0]):
+		tronco_group.remove(tronco_group.sprites()[0])
+		tronco_group.remove(tronco_group.sprites()[0])
+
+		troncos = random_size(WIDTH*2)
+
+		tronco_group.add(troncos[0])
+		tronco_group.add(troncos[1])
+
+
+
 	
-	sprite_group.draw(WINDOW)
-	sprite_group.update()
+	tucano_group.draw(WINDOW)
+	tronco_group.draw(WINDOW)
+	tucano_group.update()
+	tronco_group.update()
+
+	if pygame.sprite.groupcollide(tronco_group,tucano_group,False,False):
+		break
 
 	pygame.display.update()
 
