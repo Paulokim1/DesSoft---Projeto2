@@ -22,7 +22,7 @@ TUCANO = pygame.transform.scale(TUCANO, (TUCANO_WIDTH, TUCANO_HEIGHT))
 FUNDO = pygame.image.load('wallpaper.jpg').convert()
 FUNDO = pygame.transform.scale(FUNDO,(WIDTH,HEIGHT))
 
-TRONCO = pygame.image.load('tronco.jpg').convert_alpha()
+TRONCO = pygame.image.load('tronco_sem_fundo.png').convert_alpha()
 
 BRANCO = (255,255,255)
 TRONCO.set_colorkey(BRANCO)
