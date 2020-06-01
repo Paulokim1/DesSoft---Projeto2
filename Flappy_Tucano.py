@@ -25,7 +25,7 @@ TUCANO = pygame.transform.scale(TUCANO, (TUCANO_WIDTH, TUCANO_HEIGHT))
 FUNDO = pygame.image.load('wallpaper.jpg').convert()
 FUNDO = pygame.transform.scale(FUNDO,(WIDTH,HEIGHT))
 
-TRONCO = pygame.image.load('tronco_sem_fundo.jpg').convert_alpha()
+TRONCO = pygame.image.load('tronco_sem_fundo.png').convert_alpha()
 TRONCO = pygame.transform.scale(TRONCO,(TRONCO_WIDTH,TRONCO_HEIGHT))
 
 TRONCO_INVERTIDO = pygame.transform.flip(TRONCO,True,True)
@@ -33,6 +33,7 @@ TRONCO_INVERTIDO = pygame.transform.flip(TRONCO,True,True)
 SPEED = 10
 
 GRAVITY = 1 
+
 #inicia sprites
 class Tucano(pygame.sprite.Sprite):
 	def __init__(self):
@@ -51,16 +52,19 @@ class Tucano(pygame.sprite.Sprite):
 		self.speed += GRAVITY
 		self.rect.y += self.speed
 
-
 class Tronco(pygame.sprite.Sprite):
- 	def __init__(self):
- 		pygame.sprite.Sprite.__init__(self)
- 		self.image = TRONCO
- 		self.rect = self.image.get_rect()
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = TRONCO
+		self.rect = self.image.get_rect()
+		self.rect.centerx = WIDTH
+		self.rect.bottom = HEIGHT
+		self.speed = SPEED*2
 
 class Tronco_invertido(pygame.sprite.Sprite):
 	def __init__(self):
  		pygame.sprite.Sprite.__init__(self)
+
  		self.image = TRONCO_INVERTIDO
  		self.rect = self.image.get_rect()
 
@@ -120,4 +124,3 @@ while GAME:
 
 #Finalização do código
 pygame.quit()
-
