@@ -4,7 +4,7 @@ import random
 
 #Iniciação do código
 pygame.init()
-
+GAME = True
 #Especificações sobre a janela e o seu Título
 WIDTH = 800
 HEIGHT = 500
@@ -44,26 +44,19 @@ class Tucano(pygame.sprite.Sprite):
 		self.rect.bottom = HEIGHT/2
 		self.speed = SPEED*2
 
+	def pulo(self):
+		self.speed = -SPEED*1.5
+
 	def update(self):
 		self.speed += GRAVITY
 		self.rect.y += self.speed
 
-<<<<<<< HEAD
+
 class Tronco(pygame.sprite.Sprite):
  	def __init__(self):
  		pygame.sprite.Sprite.__init__(self)
  		self.image = TRONCO
  		self.rect = self.image.get_rect()
-=======
-	def pulo(self):
-		self.speed = -SPEED*1.5
-# class Tronco(pygame.sprite.Sprite):
-# 	def __init__(self):
-# 		pygame.sprite.Sprite.__init__(self)
-
-# 	self.image = TRONCO 
-# 	self.rect = self.image.get_rect()
->>>>>>> 26ecdc276dd59e311e611fc78c5b29fab5c0278b
 
 class Tronco_invertido(pygame.sprite.Sprite):
 	def __init__(self):
@@ -82,9 +75,32 @@ sprite_group.add()
 
 clock = pygame.time.Clock()
 FPS = 30
-#Loop principal
-GAME = True
 
+#Tela inicial
+PRETO = (0,0,0)
+TELA_INICIAL = True
+while TELA_INICIAL:
+	FONTE_TITULO = pygame.font.SysFont(None, 48)
+	FONTE_INSTRUCOES = pygame.font.SysFont(None, 24)
+	TITULO = FONTE_TITULO.render("FLAPPY TUCANO", True, (255,255,255))
+	INSTRUCOES = FONTE_INSTRUCOES.render("Aperte espaço para controlar a altura do tucano", True,(255,255,255))
+	START = FONTE_INSTRUCOES.render("Aperte enter para começar o jogo", True, (255,255,255))
+	for event in pygame.event.get():
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_RETURN:
+				TELA_INICIAL = False
+		if event.type == pygame.QUIT:
+			TELA_INICIAL = False
+			GAME = False
+
+
+	WINDOW.blit(FUNDO,(0,0))
+	WINDOW.blit(TITULO, (250, 100))
+	WINDOW.blit(INSTRUCOES, (200, 220))
+	WINDOW.blit(START, (250, 450))
+	pygame.display.update()
+
+#Loop principal
 while GAME:
 	clock.tick(FPS)
 	for event in pygame.event.get():
@@ -104,3 +120,4 @@ while GAME:
 
 #Finalização do código
 pygame.quit()
+
