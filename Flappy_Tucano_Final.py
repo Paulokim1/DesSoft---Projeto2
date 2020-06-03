@@ -102,11 +102,12 @@ for i in range(2):
 
 
 clock = pygame.time.Clock()
-FPS = 45
+FPS = 45 
 
 #Tela inicial
 PRETO = (0,0,0)
 TELA_INICIAL = True
+TELA_MORTE = False
 while TELA_INICIAL:
 	FONTE_TITULO = pygame.font.SysFont(None, 48)
 	FONTE_INSTRUCOES = pygame.font.SysFont(None, 24)
@@ -158,7 +159,27 @@ while GAME:
 		tucano_group.update()
 		tronco_group.update()
 		pygame.display.update()
-		break
+		
+
+		#Tela Morte
+		TELA_MORTE = True
+		while TELA_MORTE:
+			FONTE_MORTE = pygame.font.SysFont(None, 52)
+			FONTE_FINAL = pygame.font.SysFont(None, 24)
+			TEXTO_1 = FONTE_MORTE.render("Você morreu", True, (255,255,255))
+			TEXTO_2 = FONTE_MORTE.render("Sua pontuação foi de {0}".format(PONTUACAO), True, (255,255,255))
+			RESTART = FONTE_FINAL.render("Abra e feche o jogo para recomeçar", True,(255,255,255))
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					TELA_MORTE = False
+					GAME = False
+
+	
+			WINDOW.blit(FUNDO,(0,0))
+			WINDOW.blit(TEXTO_1, (300, 100))
+			WINDOW.blit(TEXTO_2, (200, 220))
+			WINDOW.blit(RESTART, (250, 450))
+			pygame.display.update()
 
 
 	
@@ -178,7 +199,6 @@ while GAME:
 	PONTOS()
 	
 	pygame.display.update()
-
 
 
 
