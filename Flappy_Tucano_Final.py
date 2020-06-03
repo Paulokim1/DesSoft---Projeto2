@@ -24,19 +24,30 @@ FUNDO = pygame.transform.scale(FUNDO,(WIDTH,HEIGHT))
 
 TRONCO = pygame.image.load('tronco_sem_fundo.png').convert_alpha()
 
-BRANCO = (255,255,255)
-TRONCO.set_colorkey(BRANCO)
-TRONCO_GAP = 300
+TRONCO_GAP = 100
 
 SPEED = 10
 
 GRAVITY = 1 
+
+#Pontuação
+PONTUACAO = 0
+SIT = 0
+LFT = pygame.time.get_ticks()
+ 
+def PONTOS():
+	FONTE_PONTUACAO = pygame.font.SysFont(None, 32)
+	PLACAR = FONTE_PONTUACAO.render(str(PONTUACAO), True, (255,255,255))
+	WINDOW.blit(PLACAR, (600,10))
+	pygame.display.update()
+
 #inicia sprites
 class Tucano(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
 
 		self.image = TUCANO
+		self.mask = pygame.mask.from_surface(self.image)
 		self.rect = self.image.get_rect()
 		self.rect.centerx = WIDTH/2
 		self.rect.bottom = HEIGHT/2
@@ -53,12 +64,14 @@ class Tronco(pygame.sprite.Sprite):
 	def __init__(self,inverted,xpos,ysize):
 		pygame.sprite.Sprite.__init__(self)
 		
-		self.image = TRONCO 
+		self.image = TRONCO
+		self.mask = pygame.mask.from_surface(self.image) 
 		self.rect = self.image.get_rect()
 		self.rect[0] = xpos
 
 		if inverted:
 			self.image = pygame.transform.flip(self.image,False,True)
+			self.mask = pygame.mask.from_surface(self.image) 
 			self.rect[1] = - (self.rect[3] - ysize)
 		else:
 			self.rect[1] = HEIGHT - ysize
@@ -67,7 +80,7 @@ class Tronco(pygame.sprite.Sprite):
 		self.rect[0] -= SPEED
 
 def random_size(xpos):
-	size = random.randint(100,300)
+	size = random.randint(100,400)
 	tronco = Tronco(False,xpos,size)
 	tronco_invertido = Tronco(True,xpos,HEIGHT - size - TRONCO_GAP)
 	return (tronco,tronco_invertido)
@@ -89,7 +102,7 @@ for i in range(2):
 
 
 clock = pygame.time.Clock()
-FPS = 30
+FPS = 45
 
 #Tela inicial
 PRETO = (0,0,0)
@@ -107,6 +120,7 @@ while TELA_INICIAL:
 		if event.type == pygame.QUIT:
 			TELA_INICIAL = False
 			GAME = False
+
 
 
 	WINDOW.blit(FUNDO,(0,0))
@@ -133,11 +147,18 @@ while GAME:
 		tronco_group.remove(tronco_group.sprites()[0])
 		tronco_group.remove(tronco_group.sprites()[0])
 
-		troncos = random_size(WIDTH*2)
+		troncos = random_size(WIDTH*1.5)
 
 		tronco_group.add(troncos[0])
 		tronco_group.add(troncos[1])
 
+	if pygame.sprite.groupcollide(tronco_group,tucano_group,False,False,pygame.sprite.collide_mask):
+		tucano_group.draw(WINDOW)
+		tronco_group.draw(WINDOW)
+		tucano_group.update()
+		tronco_group.update()
+		pygame.display.update()
+		break
 
 
 	
@@ -146,10 +167,20 @@ while GAME:
 	tucano_group.update()
 	tronco_group.update()
 
-	if pygame.sprite.groupcollide(tronco_group,tucano_group,False,False):
-		break
+	TFT = pygame.time.get_ticks()
+	TSLF = TFT - LFT
+	LFT = TFT
 
+	SIT = SIT + TSLF
+	if SIT > 2000:
+		PONTUACAO = PONTUACAO + 1
+		SIT = 0 
+	PONTOS()
+	
 	pygame.display.update()
+
+
+
 
 #Finalização do código
 pygame.quit()
