@@ -57,6 +57,8 @@ class Tucano(pygame.sprite.Sprite):
 		self.speed += GRAVITY
 		self.rect.y += self.speed
 
+
+	
 	def pulo(self):
 		self.speed = -SPEED*1.5
 
@@ -78,8 +80,6 @@ class Tronco(pygame.sprite.Sprite):
 
 	def update(self):
 		self.rect[0] -= SPEED
-		if self.rect[0] < 0:
-			GAME = False
 
 def random_size(xpos):
 	size = random.randint(100,400)
@@ -155,6 +155,10 @@ while GAME:
 		tronco_group.add(troncos[0])
 		tronco_group.add(troncos[1])
 
+	if player_tucano.rect.top > HEIGHT + 5:
+		GAME = False
+		TELA_INICIAL = False
+	
 	if pygame.sprite.groupcollide(tronco_group,tucano_group,False,False,pygame.sprite.collide_mask):
 		tucano_group.draw(WINDOW)
 		tronco_group.draw(WINDOW)
@@ -162,6 +166,7 @@ while GAME:
 		tronco_group.update()
 		pygame.display.update()
 		break
+
 
 
 	
@@ -175,7 +180,7 @@ while GAME:
 	LFT = TFT
 
 	SIT = SIT + TSLF
-	if SIT > 2000:
+	if SIT > 1900:
 		PONTUACAO = PONTUACAO + 1
 		SIT = 0 
 	PONTOS()
@@ -189,7 +194,7 @@ while TELA_MORTE:
 	FONTE_FINAL = pygame.font.SysFont(None, 24)
 	TEXTO_1 = FONTE_MORTE.render("Você morreu", True, (255,255,255))
 	TEXTO_2 = FONTE_MORTE.render("Sua pontuação foi de {0}".format(PONTUACAO), True, (255,255,255))
-	RESTART = FONTE_FINAL.render("Abra e feche o jogo para recomeçar", True,(255,255,255))
+	RESTART = FONTE_FINAL.render("Feche e abra o jogo para recomeçar", True,(255,255,255))
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			TELA_MORTE = False
