@@ -36,9 +36,9 @@ SIT = 0
 LFT = pygame.time.get_ticks()
  
 def PONTOS():
-	FONTE_PONTUACAO = pygame.font.SysFont(None, 32)
+	FONTE_PONTUACAO = pygame.font.SysFont(None, 54)
 	PLACAR = FONTE_PONTUACAO.render(str(PONTUACAO), True, (255,255,255))
-	WINDOW.blit(PLACAR, (600,10))
+	WINDOW.blit(PLACAR, (700,10))
 	pygame.display.update()
 
 #inicia sprites
