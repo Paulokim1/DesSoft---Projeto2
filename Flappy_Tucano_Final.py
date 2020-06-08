@@ -26,7 +26,7 @@ TRONCO = pygame.image.load('tronco_sem_fundo.png').convert_alpha()
 
 pygame.mixer.music.load('music_game.mp3')
 pygame.mixer.music.set_volume(0.4)
-pygame.mixer.music.play(loops =- 1)
+pygame.mixer.music.play(- 1)
 
 
 TRONCO_GAP = 100
