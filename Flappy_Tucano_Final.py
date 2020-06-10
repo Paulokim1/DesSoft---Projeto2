@@ -25,8 +25,12 @@ FUNDO = pygame.transform.scale(FUNDO,(WIDTH,HEIGHT))
 TRONCO = pygame.image.load('tronco_sem_fundo.png').convert_alpha()
 
 pygame.mixer.music.load('music_game.ogg')
-pygame.mixer.music.set_volume(0.4)
+pygame.mixer.music.set_volume(0.10)
 pygame.mixer.music.play(- 1)
+
+som_pulo = pygame.mixer.Sound('sfx_wing.wav')
+
+
 
 
 TRONCO_GAP = 100
@@ -48,11 +52,12 @@ def PONTOS():
 
 #inicia sprites
 class Tucano(pygame.sprite.Sprite):
-	def __init__(self):
+	def __init__(self,som):
 		pygame.sprite.Sprite.__init__(self)
 
 		self.image = TUCANO
 		self.mask = pygame.mask.from_surface(self.image)
+		self.som = som
 		self.rect = self.image.get_rect()
 		self.rect.centerx = WIDTH/2
 		self.rect.bottom = HEIGHT/2
@@ -66,6 +71,9 @@ class Tucano(pygame.sprite.Sprite):
 	
 	def pulo(self):
 		self.speed = -SPEED*1.5
+		self.som.play()
+
+		
 
 class Tronco(pygame.sprite.Sprite):
 	def __init__(self,inverted,xpos,ysize):
@@ -98,7 +106,7 @@ def is_off_screen(sprite):
 
 tucano_group = pygame.sprite.Group()
 tronco_group = pygame.sprite.Group()
-player_tucano = Tucano()
+player_tucano = Tucano(som_pulo)
 tucano_group.add(player_tucano)
 
 
@@ -197,7 +205,7 @@ TELA_MORTE = True
 while TELA_MORTE:
 	FONTE_MORTE = pygame.font.SysFont(None, 52)
 	FONTE_FINAL = pygame.font.SysFont(None, 24)
-	TEXTO_1 = FONTE_MORTE.render("Você morreu", True, (255,255,255))
+	TEXTO_1 = FONTE_MORTE.render("Você morreu :(", True, (255,255,255))
 	TEXTO_2 = FONTE_MORTE.render("Sua pontuação foi de {0}".format(PONTUACAO), True, (255,255,255))
 	RESTART = FONTE_FINAL.render("Feche e abra o jogo para recomeçar", True,(255,255,255))
 	for event in pygame.event.get():
