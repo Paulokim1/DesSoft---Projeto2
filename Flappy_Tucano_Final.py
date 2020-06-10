@@ -122,6 +122,7 @@ FPS = 45
 #Tela inicial
 PRETO = (0,0,0)
 TELA_INICIAL = True
+TELA_ESPERA = False
 TELA_MORTE = False
 while TELA_INICIAL:
 	FONTE_TITULO = pygame.font.SysFont(None, 48)
@@ -133,9 +134,9 @@ while TELA_INICIAL:
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_RETURN:
 				TELA_INICIAL = False
+				TELA_ESPERA = True
 		if event.type == pygame.QUIT:
-			TELA_INICIAL = False
-			GAME = False
+			pygame.quit()
 
 
 
@@ -144,6 +145,24 @@ while TELA_INICIAL:
 	WINDOW.blit(INSTRUCOES, (200, 220))
 	WINDOW.blit(START, (250, 450))
 	pygame.display.update()
+
+contador = 3 
+while TELA_ESPERA:
+	FONTE_CONTAGEM = pygame.font.SysFont(None, 90)
+	CONTAGEM = FONTE_CONTAGEM.render("{}".format(contador), True, (255,255,255))
+	
+	if contador < 0:
+		break
+	else:
+		pygame.time.delay(1000)
+		contador -= 1
+
+	WINDOW.blit(FUNDO,(0,0))
+	WINDOW.blit(CONTAGEM, (390, 50))
+	tucano_group.draw(WINDOW)
+	pygame.display.update()
+
+
 
 #Loop principal
 while GAME:
