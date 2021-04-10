@@ -30,15 +30,11 @@ pygame.mixer.music.play(- 1)
 
 som_pulo = pygame.mixer.Sound('sfx_wing.wav')
 
-
-
-
+#Constantes
 TRONCO_GAP = 100
-
 SPEED = 10
-
-GRAVITY = 1 
-
+GRAVITY = 1
+BRANCO = (255,255,255)
 
 LFT = pygame.time.get_ticks()
 #Pontuação
@@ -59,7 +55,7 @@ class Pontos:
 	
 	def imprimePontos(self):
 		FONTE_PONTUACAO = pygame.font.SysFont(None, 54)
-		PLACAR = FONTE_PONTUACAO.render(str(self.pontos), True, (255,255,255))
+		PLACAR = FONTE_PONTUACAO.render(str(self.pontos), True, BRANCO)
 		WINDOW.blit(PLACAR, (700,10))
 		pygame.display.update()
 
@@ -140,9 +136,9 @@ TELA_MORTE = False
 while TELA_INICIAL:
 	FONTE_TITULO = pygame.font.SysFont(None, 48)
 	FONTE_INSTRUCOES = pygame.font.SysFont(None, 24)
-	TITULO = FONTE_TITULO.render("FLAPPY TUCANO", True, (255,255,255))
-	INSTRUCOES = FONTE_INSTRUCOES.render("Aperte espaço para controlar a altura do tucano", True,(255,255,255))
-	START = FONTE_INSTRUCOES.render("Aperte enter para começar o jogo", True, (255,255,255))
+	TITULO = FONTE_TITULO.render("FLAPPY TUCANO", True, BRANCO)
+	INSTRUCOES = FONTE_INSTRUCOES.render("Aperte espaço para controlar a altura do tucano", True,BRANCO)
+	START = FONTE_INSTRUCOES.render("Aperte enter para começar o jogo", True, BRANCO)
 	for event in pygame.event.get():
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_RETURN:
@@ -162,7 +158,7 @@ while TELA_INICIAL:
 contador = 3 
 while TELA_ESPERA:
 	FONTE_CONTAGEM = pygame.font.SysFont(None, 90)
-	CONTAGEM = FONTE_CONTAGEM.render("{}".format(contador), True, (255,255,255))
+	CONTAGEM = FONTE_CONTAGEM.render("{}".format(contador), True, BRANCO)
 	
 	if contador < 0:
 		break
@@ -229,9 +225,9 @@ TELA_MORTE = True
 while TELA_MORTE:
 	FONTE_MORTE = pygame.font.SysFont(None, 52)
 	FONTE_FINAL = pygame.font.SysFont(None, 24)
-	TEXTO_1 = FONTE_MORTE.render("Você morreu :(", True, (255,255,255))
-	TEXTO_2 = FONTE_MORTE.render("Sua pontuação foi de {0}".format(pontos.pontos), True, (255,255,255))
-	RESTART = FONTE_FINAL.render("Feche e abra o jogo para recomeçar", True,(255,255,255))
+	TEXTO_1 = FONTE_MORTE.render("Você morreu :(", True, BRANCO)
+	TEXTO_2 = FONTE_MORTE.render("Sua pontuação foi de {0}".format(pontos.pontos), True, BRANCO)
+	RESTART = FONTE_FINAL.render("Feche e abra o jogo para recomeçar", True,BRANCO)
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			TELA_MORTE = False
