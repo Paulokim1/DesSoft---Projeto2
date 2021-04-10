@@ -39,16 +39,29 @@ SPEED = 10
 
 GRAVITY = 1 
 
-#Pontuação
-PONTUACAO = 0
-SIT = 0
+
 LFT = pygame.time.get_ticks()
- 
-def PONTOS():
-	FONTE_PONTUACAO = pygame.font.SysFont(None, 54)
-	PLACAR = FONTE_PONTUACAO.render(str(PONTUACAO), True, (255,255,255))
-	WINDOW.blit(PLACAR, (700,10))
-	pygame.display.update()
+#Pontuação
+class Pontos:
+	def __init__(self):
+		self.pontos = 0 
+		self.LFT = 0 
+		self.SIT = 0 
+	
+	def acrescentaPontos(self, TFT):
+		self.TSLF = TFT - self.LFT
+		self.LFT = TFT
+
+		self.SIT = self.SIT + self.TSLF
+		if self.SIT > 1650:
+			self.pontos = self.pontos + 1
+			self.SIT = 0 
+	
+	def imprimePontos(self):
+		FONTE_PONTUACAO = pygame.font.SysFont(None, 54)
+		PLACAR = FONTE_PONTUACAO.render(str(self.pontos), True, (255,255,255))
+		WINDOW.blit(PLACAR, (700,10))
+		pygame.display.update()
 
 #inicia sprites
 class Tucano(pygame.sprite.Sprite):
