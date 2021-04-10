@@ -103,11 +103,7 @@ class Tronco(pygame.sprite.Sprite):
 	def update(self):
 		self.rect[0] -= SPEED
 
-def random_size(xpos):
-	size = random.randint(100,400)
-	tronco = Tronco(False,xpos,size)
-	tronco_invertido = Tronco(True,xpos,HEIGHT - size - TRONCO_GAP)
-	return (tronco,tronco_invertido)
+
 
 def is_off_screen(sprite):
 	return sprite.rect[0] < -(sprite.rect[2])
@@ -120,9 +116,13 @@ tucano_group.add(player_tucano)
 
 
 for i in range(2):
-	troncos = random_size(WIDTH*i)
-	tronco_group.add(troncos[0])
-	tronco_group.add(troncos[1])
+	size = random.randint(100,400)
+	tronco = Tronco(False,WIDTH * i,size)
+	tronco_invertido = Tronco(True, WIDTH * i,HEIGHT - size - TRONCO_GAP)
+
+
+	tronco_group.add(tronco)
+	tronco_group.add(tronco_invertido)
 
 
 clock = pygame.time.Clock()
