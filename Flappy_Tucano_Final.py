@@ -104,7 +104,6 @@ class Tronco(pygame.sprite.Sprite):
 		self.rect[0] -= SPEED
 
 
-
 def is_off_screen(sprite):
 	return sprite.rect[0] < -(sprite.rect[2])
 
@@ -191,10 +190,12 @@ while GAME:
 		tronco_group.remove(tronco_group.sprites()[0])
 		tronco_group.remove(tronco_group.sprites()[0])
 
-		troncos = random_size(WIDTH*1.5)
+		size = random.randint(100,400)
+		tronco = Tronco(False,WIDTH * 1.5,size)
+		tronco_invertido = Tronco(True, WIDTH * 1.5,HEIGHT - size - TRONCO_GAP)
 
-		tronco_group.add(troncos[0])
-		tronco_group.add(troncos[1])
+		tronco_group.add(tronco)
+		tronco_group.add(tronco_invertido)
 
 	if player_tucano.rect.top > HEIGHT + 5:
 		GAME = False
