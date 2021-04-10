@@ -176,7 +176,7 @@ while TELA_ESPERA:
 	pygame.display.update()
 
 
-
+pontos = Pontos()
 #Loop principal
 while GAME:
 	clock.tick(FPS)
@@ -220,7 +220,7 @@ while GAME:
 	TFT = pygame.time.get_ticks()
 
 	pontos.acrescentaPontos(TFT)
-	pontos.impremePontos()
+	pontos.imprimePontos()
 	
 	pygame.display.update()
 
@@ -230,7 +230,7 @@ while TELA_MORTE:
 	FONTE_MORTE = pygame.font.SysFont(None, 52)
 	FONTE_FINAL = pygame.font.SysFont(None, 24)
 	TEXTO_1 = FONTE_MORTE.render("Você morreu :(", True, (255,255,255))
-	TEXTO_2 = FONTE_MORTE.render("Sua pontuação foi de {0}".format(PONTUACAO), True, (255,255,255))
+	TEXTO_2 = FONTE_MORTE.render("Sua pontuação foi de {0}".format(pontos.pontos), True, (255,255,255))
 	RESTART = FONTE_FINAL.render("Feche e abra o jogo para recomeçar", True,(255,255,255))
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
