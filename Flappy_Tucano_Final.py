@@ -212,23 +212,15 @@ while GAME:
 		pygame.display.update()
 		break
 
-
-
-	
 	tucano_group.draw(WINDOW)
 	tronco_group.draw(WINDOW)
 	tucano_group.update()
 	tronco_group.update()
 
 	TFT = pygame.time.get_ticks()
-	TSLF = TFT - LFT
-	LFT = TFT
 
-	SIT = SIT + TSLF
-	if SIT > 1900:
-		PONTUACAO = PONTUACAO + 1
-		SIT = 0 
-	PONTOS()
+	pontos.acrescentaPontos(TFT)
+	pontos.impremePontos()
 	
 	pygame.display.update()
 
