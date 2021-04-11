@@ -12,15 +12,18 @@ WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Flappy Tucano')
 
 #Inicia assets
+
+def inicializa (imagem, width, height):
+	sprite = pygame.image.load(imagem).convert_alpha()
+	sprite = pygame.transform.scale(sprite, (width, height))
+	return sprite
+
+
 TUCANO_WIDTH = 100
 TUCANO_HEIGHT = 100
 
-
-TUCANO = pygame.image.load('tucano2.png').convert_alpha()
-TUCANO = pygame.transform.scale(TUCANO, (TUCANO_WIDTH, TUCANO_HEIGHT))
-
-FUNDO = pygame.image.load('wallpaper.jpg').convert()
-FUNDO = pygame.transform.scale(FUNDO,(WIDTH,HEIGHT))
+TUCANO = inicializa('tucano2.png',TUCANO_WIDTH,TUCANO_HEIGHT)
+FUNDO = inicializa('wallpaper.jpg',WIDTH,HEIGHT)
 
 TRONCO = pygame.image.load('tronco_sem_fundo.png').convert_alpha()
 
@@ -29,9 +32,6 @@ pygame.mixer.music.set_volume(0.10)
 pygame.mixer.music.play(- 1)
 
 som_pulo = pygame.mixer.Sound('sfx_wing.wav')
-
-
-
 
 TRONCO_GAP = 100
 
@@ -66,8 +66,6 @@ class Tucano(pygame.sprite.Sprite):
 	def update(self):
 		self.speed += GRAVITY
 		self.rect.y += self.speed
-
-
 	
 	def pulo(self):
 		self.speed = -SPEED*1.5
@@ -93,6 +91,7 @@ class Tronco(pygame.sprite.Sprite):
 
 	def update(self):
 		self.rect[0] -= SPEED
+
 
 def random_size(xpos):
 	size = random.randint(100,400)
