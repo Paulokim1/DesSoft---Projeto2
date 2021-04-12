@@ -12,15 +12,18 @@ WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Flappy Tucano')
 
 #Inicia assets
+
+def inicializa (imagem, width, height):
+	sprite = pygame.image.load(imagem).convert_alpha()
+	sprite = pygame.transform.scale(sprite, (width, height))
+	return sprite
+
+branco = (255,255,255)
 TUCANO_WIDTH = 100
 TUCANO_HEIGHT = 100
 
-
-TUCANO = pygame.image.load('tucano2.png').convert_alpha()
-TUCANO = pygame.transform.scale(TUCANO, (TUCANO_WIDTH, TUCANO_HEIGHT))
-
-FUNDO = pygame.image.load('wallpaper.jpg').convert()
-FUNDO = pygame.transform.scale(FUNDO,(WIDTH,HEIGHT))
+TUCANO = inicializa('tucano2.png',TUCANO_WIDTH,TUCANO_HEIGHT)
+FUNDO = inicializa('wallpaper.jpg',WIDTH,HEIGHT)
 
 TRONCO = pygame.image.load('tronco_sem_fundo.png').convert_alpha()
 
@@ -29,9 +32,6 @@ pygame.mixer.music.set_volume(0.10)
 pygame.mixer.music.play(- 1)
 
 som_pulo = pygame.mixer.Sound('sfx_wing.wav')
-
-
-
 
 TRONCO_GAP = 100
 
@@ -43,12 +43,51 @@ GRAVITY = 1
 PONTUACAO = 0
 SIT = 0
 LFT = pygame.time.get_ticks()
- 
+
 def PONTOS():
+	global branco
 	FONTE_PONTUACAO = pygame.font.SysFont(None, 54)
-	PLACAR = FONTE_PONTUACAO.render(str(PONTUACAO), True, (255,255,255))
+	PLACAR = FONTE_PONTUACAO.render(str(PONTUACAO), True, branco)
 	WINDOW.blit(PLACAR, (700,10))
 	pygame.display.update()
+
+def define_tela_inicio (WINDOW):
+	global FUNDO
+	global branco
+
+	FONTE_TITULO = pygame.font.SysFont(None, 48)
+	FONTE_INSTRUCOES = pygame.font.SysFont(None, 24)
+	TITULO = FONTE_TITULO.render("FLAPPY TUCANO", True, branco)
+	INSTRUCOES = FONTE_INSTRUCOES.render("Aperte espaço para controlar a altura do tucano", True, branco)
+	START = FONTE_INSTRUCOES.render("Aperte enter para começar o jogo", True, branco)
+	
+	WINDOW.blit(FUNDO,(0,0))
+	WINDOW.blit(TITULO, (250, 100))
+	WINDOW.blit(INSTRUCOES, (200, 220))
+	WINDOW.blit(START, (250, 450))
+	
+def define_tela_morte(WINDOW):
+	global FUNDO
+	global branco
+	FONTE_MORTE = pygame.font.SysFont(None, 52)
+	FONTE_FINAL = pygame.font.SysFont(None, 24)
+	TEXTO_1 = FONTE_MORTE.render("Você morreu :(", True, branco)
+	TEXTO_2 = FONTE_MORTE.render("Sua pontuação foi de {0}".format(PONTUACAO), True, branco)
+	RESTART = FONTE_FINAL.render("Feche e abra o jogo para recomeçar", True, branco)
+
+	WINDOW.blit(FUNDO,(0,0))
+	WINDOW.blit(TEXTO_1, (300, 100))
+	WINDOW.blit(TEXTO_2, (200, 220))
+	WINDOW.blit(RESTART, (250, 450))
+
+def random_size(xpos):
+	size = random.randint(100,400)
+	tronco = Tronco(False,xpos,size)
+	tronco_invertido = Tronco(True,xpos,HEIGHT - size - TRONCO_GAP)
+	return (tronco,tronco_invertido)
+
+def is_off_screen(sprite):
+	return sprite.rect[0] < -(sprite.rect[2])
 
 #inicia sprites
 class Tucano(pygame.sprite.Sprite):
@@ -66,8 +105,6 @@ class Tucano(pygame.sprite.Sprite):
 	def update(self):
 		self.speed += GRAVITY
 		self.rect.y += self.speed
-
-
 	
 	def pulo(self):
 		self.speed = -SPEED*1.5
@@ -94,16 +131,6 @@ class Tronco(pygame.sprite.Sprite):
 	def update(self):
 		self.rect[0] -= SPEED
 
-def random_size(xpos):
-	size = random.randint(100,400)
-	tronco = Tronco(False,xpos,size)
-	tronco_invertido = Tronco(True,xpos,HEIGHT - size - TRONCO_GAP)
-	return (tronco,tronco_invertido)
-
-def is_off_screen(sprite):
-	return sprite.rect[0] < -(sprite.rect[2])
-
-
 tucano_group = pygame.sprite.Group()
 tronco_group = pygame.sprite.Group()
 player_tucano = Tucano(som_pulo)
@@ -124,12 +151,11 @@ PRETO = (0,0,0)
 TELA_INICIAL = True
 TELA_ESPERA = False
 TELA_MORTE = False
+
 while TELA_INICIAL:
-	FONTE_TITULO = pygame.font.SysFont(None, 48)
-	FONTE_INSTRUCOES = pygame.font.SysFont(None, 24)
-	TITULO = FONTE_TITULO.render("FLAPPY TUCANO", True, (255,255,255))
-	INSTRUCOES = FONTE_INSTRUCOES.render("Aperte espaço para controlar a altura do tucano", True,(255,255,255))
-	START = FONTE_INSTRUCOES.render("Aperte enter para começar o jogo", True, (255,255,255))
+
+	define_tela_inicio(WINDOW)
+
 	for event in pygame.event.get():
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_RETURN:
@@ -138,18 +164,12 @@ while TELA_INICIAL:
 		if event.type == pygame.QUIT:
 			pygame.quit()
 
-
-
-	WINDOW.blit(FUNDO,(0,0))
-	WINDOW.blit(TITULO, (250, 100))
-	WINDOW.blit(INSTRUCOES, (200, 220))
-	WINDOW.blit(START, (250, 450))
 	pygame.display.update()
 
 contador = 3 
 while TELA_ESPERA:
 	FONTE_CONTAGEM = pygame.font.SysFont(None, 90)
-	CONTAGEM = FONTE_CONTAGEM.render("{}".format(contador), True, (255,255,255))
+	CONTAGEM = FONTE_CONTAGEM.render("{}".format(contador), True, branco)
 	
 	if contador < 0:
 		break
@@ -219,24 +239,15 @@ while GAME:
 	
 	pygame.display.update()
 
+
 #Tela Morte
 TELA_MORTE = True
 while TELA_MORTE:
-	FONTE_MORTE = pygame.font.SysFont(None, 52)
-	FONTE_FINAL = pygame.font.SysFont(None, 24)
-	TEXTO_1 = FONTE_MORTE.render("Você morreu :(", True, (255,255,255))
-	TEXTO_2 = FONTE_MORTE.render("Sua pontuação foi de {0}".format(PONTUACAO), True, (255,255,255))
-	RESTART = FONTE_FINAL.render("Feche e abra o jogo para recomeçar", True,(255,255,255))
+	define_tela_morte(WINDOW)
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			TELA_MORTE = False
 			GAME = False
-
-	
-	WINDOW.blit(FUNDO,(0,0))
-	WINDOW.blit(TEXTO_1, (300, 100))
-	WINDOW.blit(TEXTO_2, (200, 220))
-	WINDOW.blit(RESTART, (250, 450))
 	pygame.display.update()
 
 #Finalização do código
